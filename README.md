@@ -5,7 +5,7 @@ Code based on the paper [_C. Agrell and K. R. Dahl (2021) Sequential Bayesian op
 
 HAL contains classes for defining SRA models with epistemic uncertainty, including GP emulators, making use of the following submodules:
 
-__HAL/SRA__: For Structural Reliability Analysis (SRA) with Monte Carlo simulation, importance sampling, design point search and FORM (First Order Reliability Methods)
+__HAL/SRA__: For Structural Reliability Analysis (SRA) with Monte Carlo simulation, importance sampling, design point search and FORM (First Order Reliability Method)
 
 __HAL/GP__: Gaussian Process (GP) module with fast evaluation of posterior when a single observation is added at some specified new input location __x__<sub>new</sub>
 
