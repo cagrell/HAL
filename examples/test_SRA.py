@@ -10,7 +10,7 @@ from HAL.SRA import SRA_baseclass
 
 # Define a model and print it
 def main():
-    print('testing..')
+    print(' *** Create SRA model ***')
 
     # Create multivariate distribution (3-dim normal in this case)
     X_dist = MultivariateDistribution()
@@ -19,7 +19,7 @@ def main():
     X_dist.AddVariable(Uniform('x3', 4.13, 5.86))
 
     # Print distribution
-    print('*** Input distribution ***')
+    print('\n *** Input distribution ***')
     X_dist.Describe()
 
     # The limit state
@@ -31,26 +31,23 @@ def main():
 
     # Run crude MC
     beta_MC, pof_MC, cov_MC = SRA_MODEL.Run_MC(10000)
-    print()
-    print('*** Crude MC ***')
+    print('\n *** Crude MC ***')
     print('MC beta:', beta_MC)
     print('MC pof:', pof_MC)
-    print()
 
     # Run FORM
     conv, beta_FORM, pof_FORM = SRA_MODEL.Run_FORM()
-    print('*** FORM ***')
+    print('\n *** FORM ***')
     print('FORM convergence:', conv)
     print('FORM beta:', beta_FORM)
     print('FORM pof', pof_FORM)
 
     # ..some intermediate results from FORM
-    print()
-    print('* Sensitivity vector etc. from MPP search *')
+    print('\n * Sensitivity vector etc. from MPP search *')
     for key, val in SRA_MODEL._results_MPP.items():
         print(key + ':', val)
 
-    print('done')
+    print('\n done')
 
 if __name__ == "__main__":
     main()

@@ -3,7 +3,6 @@ import time
 import sys, os
 import numpy as np
 import scipy as sp
-import pandas as pd
 from scipy import optimize
 
 from ..util.div import formattime, len_none

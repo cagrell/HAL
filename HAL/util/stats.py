@@ -1,4 +1,3 @@
-from sklearn.neighbors import KernelDensity
 import numpy as np
 import scipy as sp
 
@@ -42,74 +41,3 @@ def normal_cdf_approx(x):
     
     return prob
 
-def mode_from_samples(samples, bandwidth_fraction = 0.1):
-    """
-    Compute the mode for each set of samples in 'samples'
-    
-    Using kernel density estimation
-    
-    Input:
-    samples -- m x n array with n samples for each of m univariate random variables
-    bandwidth_fraction -- kde will use bandwidth = [range of dataseries (max - min)] * bandwidth_fraction
-    """
-
-    # Function to optimize for finding the mode
-    # -- the kernel density estimator
-    def optfun(x, *args):
-        kde = args[0]
-        return -kde.score_samples(x.reshape(-1, 1))
-
-    mode = np.zeros(samples.shape[0])
-
-    for i in range(samples.shape[0]):
-        data = samples[i].T
-        min_x, max_x = data.min(), data.max()
-        bandwidth = bandwidth_fraction*(max_x - min_x)
-
-        # Fit kde
-        kde = KernelDensity(kernel='gaussian', bandwidth=bandwidth).fit(data)
-
-        # Find argmax of density
-        args = (kde, )
-        bounds = [(min_x, max_x)]
-
-        res = sp.optimize.differential_evolution(optfun, bounds = bounds, args = args)
-
-        mode[i] = res.x[0]
-        
-    return mode
-
-def trunc_norm_moments_approx_corrfree(mu, sigma, LB, UB, inf_num = 1E100):
-    """ 
-    Correlation free approximation of truncated moments of multivariate Gaussian
-    
-    If X~N(mu, sigma), compute expectation and variance of X | LB <= X <= UB
-    
-    Input: 
-    mu, LB, UB : 1D numpy arrays
-    sigma : numpy matrix
-    inf_num : inf values are replaced with this number in calculations
-    
-    Returns:
-    tmu, tvar (expectation and variance of truncated variable)
-    """
-    
-    s2 = np.diag(sigma)
-    s = np.sqrt(s2)
-    a = (LB - mu )/s
-    b = (UB - mu )/s
-    
-    # Replace inf and -inf by numbers
-    a[a == float('inf')] = inf_num
-    a[a == float('-inf')] = -inf_num
-    b[b == float('inf')] = inf_num
-    b[b == float('-inf')] = -inf_num
-    
-    phi_a = sp.stats.norm.pdf(a)
-    phi_b = sp.stats.norm.pdf(b)
-    PHI_diff = normal_cdf_approx(b) - normal_cdf_approx(a)
-    
-    tmu = mu + s*(phi_a - phi_b)/PHI_diff
-    tvar = s2*(1 + (a*phi_a - b*phi_b)/PHI_diff - ((phi_a - phi_b)/PHI_diff)**2)
-    
-    return tmu, tvar

@@ -35,7 +35,7 @@ def get_initial_model(x_design, y_design):
 
 # Define a model and print it
 def main():
-    print('testing..')
+    print(' *** Create GP model ***')
 
     x_design = np.array([[-1.5], [0], [1]])
     y_design = fun_x(x_design).flatten()
@@ -49,10 +49,15 @@ def main():
     x_new = np.array([[-0.5]])
     y_new = fun_x(x_new)[0][0]
 
+    print('\n *** Test fast computation of posterior with new observation (x_new, y_new) ***')
+
     model.set_x_new(x_new)
     model.set_y_new(y_new)
+    print('(x_new, y_new) = ({}, {})'.format(x_new, y_new))
 
     m, v = model.calc_posterior_new(x.reshape(-1, 1))
+
+    print('\n *** Create plot ***')
 
     plt.style.use('seaborn-darkgrid')
     fig, ax = plt.subplots()
@@ -68,9 +73,11 @@ def main():
     legend.get_frame().set_facecolor('white')
     
     save_dir = 'C:\\Data\\tmp\\'
-    fig.savefig(save_dir+'aa.png')
+    figname = '1dGPfig.png'
+    print('Save figure', save_dir+figname)
+    fig.savefig(save_dir+figname)
     
-    print('done')
+    print('\n done')
 
 if __name__ == "__main__":
     main()
