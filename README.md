@@ -1,7 +1,7 @@
 # HAL - Hierarchical Active Learning
 Python module for active learning in hierarchical (Bayesian network type of) structural reliability models.
 
-Code based on the paper [_C. Agrell and K. R. Dahl (2021) Sequential Bayesian optimal experimental design for structural reliability analysis_](https://arxiv.org/abs/2007.00402). 
+Code based on the paper [_C. Agrell and K. R. Dahl (2021) Sequential Bayesian optimal experimental design for structural reliability analysis_](https://doi.org/10.1007/s11222-021-10000-2). 
 
 HAL contains classes for defining SRA models with epistemic uncertainty, including GP emulators, making use of the following submodules:
 
